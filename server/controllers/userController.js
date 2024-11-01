@@ -9,7 +9,7 @@ export const createUser = async (req, res) => {
     if (oldUser) {
       return res.status(400).json({
         success: false,
-        message: null,
+        message: 'User already exists',
         requestId: uuidv4(),
         data: null,
       });
