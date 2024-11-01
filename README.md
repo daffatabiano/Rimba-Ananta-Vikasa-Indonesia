@@ -24,7 +24,7 @@ Clone this repository to your local machine using:
 
 ```bash
 git clone https://github.com/daffatabiano/Rimba-Ananta-Vikasa-Indonesia.git
-cd Rimba-Ananta-Vikasa-Indonesia
+cd Rimba-Ananta-Vikasa-Indonesia```
 
 ## Running Applications
 
@@ -59,6 +59,3 @@ npm i
 
 ```bash 
 npm run dev
-
-
-
