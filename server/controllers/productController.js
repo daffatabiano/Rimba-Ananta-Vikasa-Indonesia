@@ -1,4 +1,3 @@
-import { request } from 'express';
 import Product from '../models/productModel.js';
 
 export const createProduct = async (req, res) => {
