@@ -1,4 +1,6 @@
 import User from '../models/userModel.js';
+import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 
 export const createUser = async (req, res) => {
   try {
@@ -8,7 +10,7 @@ export const createUser = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: null,
-        requestId: newUser._id,
+        requestId: uuidv4(),
         data: null,
       });
     } else {
@@ -17,7 +19,7 @@ export const createUser = async (req, res) => {
       res.status(201).json({
         success: true,
         message: null,
-        requestId: newUser._id,
+        requestId: uuidv4(),
         data: newUser,
       });
     }
@@ -35,7 +37,7 @@ export const login = async (req, res) => {
         success: false,
         data: null,
         message: 'User not found',
-        requestId: null,
+        requestId: uuidv4(),
       });
     }
 
@@ -44,20 +46,40 @@ export const login = async (req, res) => {
         success: false,
         data: null,
         message: 'Invalid password',
-        requestId: null,
+        requestId: uuidv4(),
       });
     }
 
-    res.status(200).json({
-      success: true,
-      data: {
-        accessToken: user._id,
-        refreshToken: user._id,
-        expires: Date.now() + 3600000,
-        user: user,
+    const accessToken = jwt.sign(
+      {
+        id: user._id,
       },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1d',
+      }
+    );
+
+    const refreshToken = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1d',
+      }
+    );
+
+    res.status(200).json({
+      requestId: uuidv4(),
+      success: true,
       message: null,
-      requestId: user._id,
+      data: {
+        user: user,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        expires: Date.now() + 3600000,
+      },
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

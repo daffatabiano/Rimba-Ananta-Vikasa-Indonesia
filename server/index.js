@@ -2,9 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-// import userRoutes from './routes/userRoutes.js';
-// import productRoutes from './routes/productRoutes.js';
-// import uploadRoutes from './routes/uploadRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import transactionRoutes from './routes/transactionRoutes.js';
 
 dotenv.config();
 
@@ -24,9 +24,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(userRoutes);
-// app.use(productRoutes);
-// app.use(uploadRoutes);
+app.use(userRoutes);
+app.use(productRoutes);
+app.use(transactionRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
