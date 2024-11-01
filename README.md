@@ -22,9 +22,9 @@ This project is a full-stack application that includes a server-side component b
 
 Clone this repository to your local machine using:
 
-```bash
+``` bash
 git clone https://github.com/daffatabiano/Rimba-Ananta-Vikasa-Indonesia.git
-cd Rimba-Ananta-Vikasa-Indonesia```
+cd Rimba-Ananta-Vikasa-Indonesia ```
 
 ## Running Applications
 
