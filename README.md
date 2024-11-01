@@ -22,26 +22,26 @@ This project is a full-stack application that includes a server-side component b
 
 Clone this repository to your local machine using:
 
-``` bash
+```bash
 git clone https://github.com/daffatabiano/Rimba-Ananta-Vikasa-Indonesia.git
-cd Rimba-Ananta-Vikasa-Indonesia ```
+cd Rimba-Ananta-Vikasa-Indonesia
 
 ## Running Applications
 
 ### Server Side 
 
-```bash 
+``` bash 
 cd server 
 npm install
 
 #### Add .env Files
 
-```plainText 
+``` plainText 
 PORT='3000' 
 MONGO_URI='mongodb+srv://daffatabianoo:Daffatabiano14@cluster0.mrv4i.mongodb.net/rimba' 
 JWT_SECRET='daffatabiano'
 
-```bash 
+``` bash 
 npm start
 or 
 nodemon
@@ -57,5 +57,5 @@ npm i -g nodemon / npm i nodemon
 cd ../client/vue-app-project
 npm i 
 
-```bash 
+``` bash 
 npm run dev
