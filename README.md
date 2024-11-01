@@ -23,5 +23,6 @@ This project is a full-stack application that includes a server-side component b
 Clone this repository to your local machine using:
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone [https://github.com/your-username/your-repo-name.git](https://github.com/daffatabiano/Rimba-Ananta-Vikasa-Indonesia.git)
+cd Rimba-Ananta-Vikasa-Indonesia
+
