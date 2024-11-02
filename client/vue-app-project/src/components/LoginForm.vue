@@ -1,16 +1,45 @@
 <template>
-  <div class="login-form">
-    <h2>Login</h2>
+  <div class="bg-white p-4 rounded-lg drop-shadow">
+    <h2 class="text-2xl font-bold">Login</h2>
+    <p class="text-xl text-slate-400 mb-4 text-balance font-light">
+      Please login to continue,
+    </p>
     <form @submit.prevent="handleLogin">
+      <p
+        v-if="notify"
+        class="text-center p-2 rounded-lg font-semibold"
+        :class="
+          message.includes('Success')
+            ? 'text-green-700 bg-green-200/60'
+            : 'text-red-700 bg-red-200/60'
+        ">
+        {{ message }}
+      </p>
       <div>
         <label for="email">Email:</label>
-        <input type="email" v-model="email" required />
+        <input
+          type="email"
+          v-model="email"
+          required
+          class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
       <div>
         <label for="password">Password:</label>
-        <input type="password" v-model="password" required />
+        <input
+          type="password"
+          v-model="password"
+          required
+          class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
-      <button type="submit">Login</button>
+      <button
+        type="submit"
+        class="bg-slate-200 mt-6 px-4 py-2 rounded-lg w-full">
+        Login
+      </button>
+      <p class="text-center mt-2 text-slate-500 text-sm">
+        Don't have an account?
+        <a href="/register" class="slate-800 font-semibold">Register</a>
+      </p>
     </form>
   </div>
 </template>
@@ -21,6 +50,11 @@ export default {
     return {
       email: '',
       password: '',
+
+      notify: false,
+      message: '',
+
+      loading: false,
     };
   },
   methods: {
@@ -39,16 +73,24 @@ export default {
             }),
           }
         );
+        this.loading = true;
         if (response.status === 200) {
           const data = await response.json();
           const token = `Bearer ${data?.data?.accessToken}`;
           localStorage.setItem('token', token);
+          this.notify = true;
+          this.message = 'Login Success !';
+          this.loading = false;
           setTimeout(() => {
+            this.notify = false;
+            this.message = '';
             this.$router.push('/');
           }, 1000);
         } else {
           const errorData = await response.json();
-          alert(errorData.error);
+          this.loading = false;
+          this.notify = true;
+          this.message = errorData.message;
         }
         this.$emit('login', {
           email: this.email,
@@ -56,7 +98,8 @@ export default {
           token: localStorage.getItem('token'),
         });
       } catch (error) {
-        console.log(error);
+        this.loading = false;
+        this.message = error.response.message;
       }
     },
   },

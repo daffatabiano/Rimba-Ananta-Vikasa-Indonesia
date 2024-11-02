@@ -1,5 +1,6 @@
 <template>
-  <div class="login-view">
+  <div
+    class="min-h-screen h-full w-full min-2-screen bg-slate-200/90 p-4 flex flex-col justify-center items-center">
     <LoginForm />
   </div>
 </template>
@@ -13,14 +14,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.login-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  height: 100%;
-}
-/* Tambahkan style tambahan jika diperlukan */
-</style>
