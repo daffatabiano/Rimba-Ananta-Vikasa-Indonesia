@@ -2,20 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/**",
-      "use": "@vercel/static-build"
+      "src": "client/vue-app-project/index.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/dist/index.html"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "dest": "client/vue-app-project/index.js"
     }
   ]
 }
