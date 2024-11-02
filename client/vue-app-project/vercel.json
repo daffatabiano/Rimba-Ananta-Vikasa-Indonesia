@@ -2,14 +2,26 @@
   "version": 2,
   "builds": [
     {
-      "src": "client/vue-app-project/index.js",
-      "use": "@vercel/node"
+      "src": "dist/**",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "client/vue-app-project/src/router.js"
+      "dest": "/dist/index.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "src": "/api/(.*)",
+      "dest": 1,
+      "has": [
+        {
+          "type": "host",
+          "value": "api.example.com"
+        }
+      ]
     }
   ]
 }
