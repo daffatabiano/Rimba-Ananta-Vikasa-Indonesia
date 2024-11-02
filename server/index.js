@@ -20,10 +20,7 @@ db.once('open', () => {
 });
 
 app.use((req, res, next) => {
-  res.header(
-    'Access-Control-Allow-Origin',
-    process.env.CLIENT_URL || 'http://localhost:5173'
-  );
+  res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header(
     'Access-Control-Allow-Headers',
@@ -34,7 +31,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: process.env.CLIENT_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
