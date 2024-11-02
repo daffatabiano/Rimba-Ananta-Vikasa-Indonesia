@@ -21,7 +21,7 @@ db.once('open', () => {
 
 app.use(
   cors({
-    origin: '*',
+    origin: 'https://rimba-ananta-vikasa-indonesia.vercel.app/',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
