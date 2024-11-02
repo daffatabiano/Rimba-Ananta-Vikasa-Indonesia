@@ -35,6 +35,7 @@ export default {
           }`,
           {
             method: 'DELETE',
+            mode: 'no-cors',
             headers: {
               'Content-Type': 'application/json',
               Accept: 'application/json',
