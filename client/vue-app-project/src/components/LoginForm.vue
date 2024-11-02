@@ -82,6 +82,7 @@ export default {
           this.message = 'Login Success !';
           this.loading = false;
           setTimeout(() => {
+            localStorage.setItem('user', JSON.stringify(data?.data?.user));
             this.notify = false;
             this.message = '';
             this.$router.push('/');

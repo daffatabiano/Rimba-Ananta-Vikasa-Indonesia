@@ -1,25 +1,21 @@
 <template>
-  <div class="product-view">
+  <div>
+    <HeadersDashboard />
+    <SidebarDashboard />
     <ProductForm />
   </div>
 </template>
 
 <script>
+import HeadersDashboard from '../components/elements/HeadersDashboard.vue';
+import SidebarDashboard from '../components/elements/SidebarDashboard.vue';
 import ProductForm from '../components/productForm.vue';
 
 export default {
   components: {
     ProductForm,
+    HeadersDashboard,
+    SidebarDashboard,
   },
 };
 </script>
-
-<style>
-.product-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  height: 100%;
-}
-</style>

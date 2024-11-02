@@ -1,10 +1,21 @@
 <template>
-  <div class="text-red-500 font-bold">dashboard</div>
+  <div>
+    <HeadersDashboard />
+    <SidebarDashboard />
+    <div
+      class="ps-52 pt-24 text-slate-800 font-lighter text-2xl italic underline-offset-4 underline">
+      Summary Report
+    </div>
+  </div>
 </template>
 
 <script>
+import HeadersDashboard from '../components/elements/HeadersDashboard.vue';
+import SidebarDashboard from '../components/elements/SidebarDashboard.vue';
+
 export default {
   name: 'DashboardView',
+  components: { HeadersDashboard, SidebarDashboard },
   data() {
     return {
       data: null,
