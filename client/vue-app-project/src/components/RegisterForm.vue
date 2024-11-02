@@ -1,25 +1,64 @@
 <template>
-  <div class="register-form">
-    <h2>Register</h2>
+  <div class="bg-white p-4 rounded-lg drop-shadow">
+    <h2 class="text-2xl font-bold">Register</h2>
+    <p class="text-lg text-slate-400 mb-4 font-light italic">
+      Please fill in this form to create an account.
+    </p>
+    <p
+      v-if="notify"
+      class="text-center p-2 rounded-lg font-semibold"
+      :class="
+        message.includes('Success')
+          ? 'text-green-700 bg-green-200/60'
+          : 'text-red-700 bg-red-200/60'
+      ">
+      {{ message }}
+    </p>
     <form action="handleRegister" @submit.prevent="handleRegister">
       <div>
         <label for="name">Name:</label>
-        <input type="text" v-model="name" required />
+        <input
+          type="text"
+          v-model="name"
+          required
+          class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
       <div>
         <label for="email">Email:</label>
-        <input type="email" v-model="email" required />
+        <input
+          type="email"
+          v-model="email"
+          required
+          class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
       <div>
         <label for="password">Password:</label>
-        <input type="password" v-model="password" required />
+        <input
+          type="password"
+          v-model="password"
+          required
+          class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
       <div>
         <label for="phoneNumber">Number Phone</label>
-        <input type="number" v-model="phoneNumber" />
+        <input
+          type="number"
+          v-model="phoneNumber"
+          class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
 
-      <button type="submit">Sign Up</button>
+      <button
+        type="submit"
+        class="bg-slate-200 mt-6 px-4 py-2 rounded-lg w-full">
+        Sign Up
+      </button>
+
+      <p
+        class="text-center mt-4 text-slate-400 font-light italic"
+        @click="$router.push('/login')"
+        role="button">
+        Already have an account? Login
+      </p>
     </form>
   </div>
 </template>
@@ -70,36 +109,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.register-form {
-  max-width: 300px;
-  margin: auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-.register-form h2 {
-  text-align: center;
-}
-.register-form div {
-  margin-bottom: 1rem;
-}
-.register-form label {
-  display: block;
-}
-.register-form input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
-.register-form button {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-</style>
