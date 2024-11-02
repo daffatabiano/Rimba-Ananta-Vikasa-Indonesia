@@ -2,54 +2,54 @@ import Transaction from '../models/transactionModel.js';
 import Product from '../models/productModel.js';
 import User from '../models/userModel.js';
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
 
 export const createTransaction = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req?.user?._id;
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({
+        success: false,
+        message: 'User Not Found',
+        requestId: uuidv4(),
+        data: null,
+      });
     }
 
-    const productIds = req.body.products.map((p) => p.productCode);
-    const products = await Product.find({ _id: { $in: productIds } });
-    if (products.length !== req.body.products.length) {
-      return res
-        .status(400)
-        .json({ message: 'Some product codes are invalid' });
+    const products = req.body.products;
+
+    if (!products) {
+      return res.status(404).json({
+        success: false,
+        message: 'Products Not Found',
+        requestId: uuidv4(),
+        data: null,
+      });
     }
 
-    const newTransaction = new Transaction({
-      customer: userId,
-      products: req.body.products.map((product) => {
-        const productData = products.find(
-          (p) => p._id.toString() === product.productCode
-        );
-        return {
-          productCode: productData._id,
-          name: productData.name,
-          price: productData.price,
-          quantity: product.quantity,
-        };
-      }),
-      totalAmount: req.body.products.reduce((total, product) => {
-        const productData = products.find(
-          (p) => p._id.toString() === product.productCode
-        );
-        return total + productData.price * product.quantity;
-      }, 0),
-      date: Date.now(),
+    const transaction = await Transaction.create({
+      customer: req.body.customer,
+      userId: user?._id,
+      invoiceNo: req.body.invoiceNo,
+      products: req.body.products,
+      date: req.body.date,
     });
-    await newTransaction.save();
+
     res.status(201).json({
-      requestId: uuidv4(),
       success: true,
-      message: 'Transaction created successfully',
-      data: newTransaction,
+      message: null,
+      requestId: uuidv4(),
+      data: transaction,
     });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      requestId: uuidv4(),
+      data: null,
+    });
   }
 };
 
@@ -67,7 +67,7 @@ export const getTransactionByUserId = async (req, res) => {
       });
     }
 
-    const transactions = await Transaction.find({ customer: user.name });
+    const transactions = await Transaction.find({ userId: user?._id });
     res.status(200).json({
       success: true,
       message: null,
@@ -137,36 +137,15 @@ export const deleteTransaction = async (req, res) => {
 export const getSummary = async (req, res) => {
   try {
     const userId = req.user._id;
+    console.log(userId);
 
-    const summary = await Transaction.aggregate([
-      {
-        $match: {
-          customer: userId,
-        },
-      },
-      {
-        $unwind: '$product',
-      },
-      {
-        $group: {
-          _id: '$product.productCode',
-          quantity: { $sum: '$product.quantity' },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          productCode: '$_id',
-          quantity: 1,
-        },
-      },
-    ]);
+    const transactions = await Transaction.find({ userId: userId });
 
     res.status(200).json({
       success: true,
       message: null,
       requestId: uuidv4(),
-      data: summary,
+      data: transactions,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

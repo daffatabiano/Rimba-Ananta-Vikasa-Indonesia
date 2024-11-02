@@ -1,9 +1,20 @@
 <template>
-  <div><h1>Transaction</h1></div>
+  <div class="container">
+    <TransactionForm />
+  </div>
 </template>
 
 <script>
-export default {};
+import TransactionForm from '../components/TransactionForm.vue';
+export default { components: { TransactionForm } };
 </script>
 
-<style></style>
+<style>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  height: 100%;
+}
+</style>

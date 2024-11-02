@@ -55,7 +55,7 @@ export default {
           }
         );
         if (response.status === 201) {
-          const data = await response.json();
+          await response.json();
           setTimeout(() => {
             this.$router.push('/login');
           }, 1000);

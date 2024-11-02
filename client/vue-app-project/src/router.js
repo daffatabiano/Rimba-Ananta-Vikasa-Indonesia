@@ -4,9 +4,10 @@ import RegisterView from './views/RegisterView.vue';
 import ProductView from './views/ProductView.vue';
 import TransactionView from './views/TransactionView.vue';
 import DashboardView from './views/DashboardView.vue';
+import HomeView from './views/HomeView.vue';
 
 const routes = [
-  { path: '/', component: LoginView },
+  { path: '/', component: HomeView },
   { path: '/login', component: LoginView },
   { path: '/register', component: RegisterView },
   { path: '/product', component: ProductView },

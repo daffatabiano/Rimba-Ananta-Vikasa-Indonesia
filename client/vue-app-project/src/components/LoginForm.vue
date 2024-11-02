@@ -62,39 +62,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.login-form {
-  max-width: 300px;
-  margin: auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-.login-form h2 {
-  text-align: center;
-}
-.login-form div {
-  margin-bottom: 1rem;
-}
-.login-form label {
-  display: block;
-}
-.login-form input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
-.login-form button {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.login-form button:hover {
-  background-color: #218838;
-}
-</style>
