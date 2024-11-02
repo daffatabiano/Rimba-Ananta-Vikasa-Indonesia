@@ -15,7 +15,7 @@
 import HeadersDashboard from '../components/elements/HeadersDashboard.vue';
 import ProductTabel from '../components/elements/productTabel.vue';
 import SidebarDashboard from '../components/elements/SidebarDashboard.vue';
-import ProductForm from '../components/productForm.vue';
+import ProductForm from '../components/ProductForm.vue';
 
 export default {
   components: {
