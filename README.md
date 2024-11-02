@@ -25,37 +25,46 @@ Clone this repository to your local machine using:
 ```bash
 git clone https://github.com/daffatabiano/Rimba-Ananta-Vikasa-Indonesia.git
 cd Rimba-Ananta-Vikasa-Indonesia
+```
 
-## Running Applications
+# Running Applications
 
-### Server Side 
+### Server Side
 
-``` bash 
-cd server 
+```bash
+cd server
 npm install
+```
 
 #### Add .env Files
 
-``` plainText 
-PORT='3000' 
-MONGO_URI='mongodb+srv://daffatabianoo:Daffatabiano14@cluster0.mrv4i.mongodb.net/rimba' 
+```plainText
+PORT='3000'
+MONGO_URI='mongodb+srv://daffatabianoo:Daffatabiano14@cluster0.mrv4i.mongodb.net/rimba'
 JWT_SECRET='daffatabiano'
+```
 
-``` bash 
+```bash
 npm start
-or 
+or
 nodemon
+```
 
-#### if don't have nodemon 
+#### if don't have nodemon
+
 you can install first as a global or just project with copy this command
+
 ```bash
 npm i -g nodemon / npm i nodemon
+```
 
 ## Client Side
 
-```bash 
+```bash
 cd ../client/vue-app-project
-npm i 
+npm i
+```
 
-``` bash 
+```bash
 npm run dev
+```
