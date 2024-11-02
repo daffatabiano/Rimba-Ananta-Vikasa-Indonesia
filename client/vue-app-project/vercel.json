@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "client/vue-app-project/index.js"
+      "dest": "client/vue-app-project/src/router.js"
     }
   ]
 }
