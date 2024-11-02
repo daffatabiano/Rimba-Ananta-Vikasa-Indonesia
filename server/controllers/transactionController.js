@@ -81,7 +81,19 @@ export const getTransactionByUserId = async (req, res) => {
 
 export const deleteTransaction = async (req, res) => {
   try {
-    const transaction = await Transaction.findById(req.params.id);
+    const transactionId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(transactionId)) {
+      return res.status(404).json({
+        success: false,
+        message: 'Transaction Not Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+
+    const transaction = await Transaction.findByIdAndDelete(transactionId);
+
     if (!transaction) {
       return res.status(404).json({
         success: false,
@@ -91,46 +103,14 @@ export const deleteTransaction = async (req, res) => {
       });
     }
 
-    const user = await User.findById(transaction.customer);
-    const product = await Product.fineOne({
-      productCode: transaction.product[0].productCode,
-    });
-
-    const userHasProduct = user.products.some(
-      (p) => p.productCode === transaction.product[0].productCode
-    );
-
-    if (!userHasProduct) {
-      return res.status(404).json({
-        success: false,
-        message: 'Transaction Not Found',
-        requestId: uuidv4(),
-        data: null,
-      });
-    }
-
-    await transaction.remove();
-
-    await Product.findByIdAndDelete(transaction.product[0].productCode);
-
-    user.products = user.products.filter(
-      (p) => p.productCode !== transaction.product[0].productCode
-    );
-    await user.save();
-
     res.status(200).json({
       success: true,
-      message: null,
+      message: 'Transaction Deleted',
       requestId: uuidv4(),
-      data: null,
+      data: transaction,
     });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-      requestId: uuidv4(),
-      data: null,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 

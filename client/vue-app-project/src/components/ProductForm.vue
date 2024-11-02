@@ -1,41 +1,38 @@
 <template>
-  <div class="product-form">
-    <h1>Product Create</h1>
-    <form action="handleProduct" @submit.prevent="handleProduct">
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" v-model="name" required />
+  <div class="bg-slate-100 h-full min-h-96 p-4 rounded-lg flex flex-col">
+    <h1 class="text-2xl font-bold mb-6">Product Create</h1>
+    <form
+      class="flex flex-col gap-4"
+      action="handleProduct"
+      @submit.prevent="handleProduct">
+      <div class="flex flex-col gap-2">
+        <label for="name" class="text-lg font-semibold text-slate-600"
+          >Name</label
+        >
+        <input class="p-2 rounded-lg" type="text" v-model="name" required />
       </div>
-      <div>
-        <label for="price">Price</label>
-        <input type="number" v-model="price" required />
+      <div class="flex flex-col gap-2">
+        <label for="price" class="text-lg font-semibold text-slate-600"
+          >Price</label
+        >
+        <input type="number" v-model="price" required class="p-2 rounded-lg" />
       </div>
-      <div>
-        <label for="quantity">Quantity"</label>
-        <input type="number" v-model="quantity" required />
+      <div class="flex flex-col gap-2">
+        <label for="quantity" class="text-lg font-semibold text-slate-600"
+          >Quantity</label
+        >
+        <input
+          type="number"
+          v-model="quantity"
+          required
+          class="p-2 rounded-lg" />
       </div>
-      <button type="submit">Submit</button>
+      <button
+        class="p-2 rounded-lg text-center bg-slate-300 font-bold text-slate-800"
+        type="submit">
+        Submit
+      </button>
     </form>
-  </div>
-
-  <div class="product-list">
-    <h2>Product List</h2>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="product in products" :key="product._id">
-          <td>{{ product.name }}</td>
-          <td>{{ product.price }}</td>
-          <td>{{ product.quantity }}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
 
@@ -46,17 +43,7 @@ export default {
       name: '',
       price: 0,
       quantity: 0,
-
-      products: [],
     };
-  },
-
-  async mounted() {
-    try {
-      await this.getProducts();
-    } catch (error) {
-      console.error(error);
-    }
   },
 
   methods: {
@@ -91,64 +78,6 @@ export default {
         console.error(error);
       }
     },
-
-    async getProducts() {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BASE_API_URL}/products`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-              Authorization: localStorage.getItem('token'),
-            },
-          }
-        );
-        if (response.status === 200) {
-          const data = await response.json();
-          this.products = data.data;
-        } else {
-          const errorData = await response.json();
-          alert(errorData.message);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
   },
 };
 </script>
-
-<style>
-.product-form {
-  max-width: 300px;
-  margin: auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-.product-form h1 {
-  text-align: center;
-}
-.product-form div {
-  margin-bottom: 1rem;
-}
-.product-form label {
-  display: block;
-}
-.product-form input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
-.product-form button {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-</style>

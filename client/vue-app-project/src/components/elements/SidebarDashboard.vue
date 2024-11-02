@@ -45,7 +45,7 @@
         >
       </li>
       <li
-        @click="this.router.push('/transaction')"
+        @click="this.$router.push('/transaction')"
         class="w-full bg-slate-700 hover:text-slate-400 flex items-center font-bold text-white p-4 rounded-lg">
         <a href="/transaction" class="flex items-center gap-2"
           ><i class="text-2xl text-white"

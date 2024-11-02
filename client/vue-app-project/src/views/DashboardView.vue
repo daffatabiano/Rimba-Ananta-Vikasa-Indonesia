@@ -2,9 +2,14 @@
   <div>
     <HeadersDashboard />
     <SidebarDashboard />
-    <div
-      class="ps-52 pt-24 text-slate-800 font-lighter text-2xl italic underline-offset-4 underline">
-      Summary Report
+    <div class="ps-52 pt-24 pe-4">
+      <h1
+        class="text-slate-800 font-lighter text-2xl italic underline-offset-4 underline">
+        Summary Report
+      </h1>
+      <div class="mt-4">
+        <SummaryTable @show="showModal" />
+      </div>
     </div>
   </div>
 </template>
@@ -12,38 +17,17 @@
 <script>
 import HeadersDashboard from '../components/elements/HeadersDashboard.vue';
 import SidebarDashboard from '../components/elements/SidebarDashboard.vue';
+import SummaryTable from '../components/elements/SummaryTable.vue';
 
 export default {
-  name: 'DashboardView',
-  components: { HeadersDashboard, SidebarDashboard },
   data() {
-    return {
-      data: null,
-    };
+    return {};
   },
-  async mounted() {
-    this.getSummary();
-  },
+  name: 'DashboardView',
+  components: { HeadersDashboard, SidebarDashboard, SummaryTable },
   methods: {
-    async getSummary() {
-      try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BASE_API_URL}/transactions/summary`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-              Authorization: localStorage.getItem('token'),
-            },
-          }
-        );
-        const data = await res.json();
-
-        console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
+    showModal() {
+      this.showModal = true;
     },
   },
 };

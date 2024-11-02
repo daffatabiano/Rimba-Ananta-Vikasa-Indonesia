@@ -1,22 +1,49 @@
 <template>
-  <div class="transaction-form">
-    <h1>Transaction</h1>
+  <div class="flex flex-col bg-white p-4 drop-shadow rounded-lg">
+    <h1 class="text-2xl font-bold">Transaction</h1>
 
-    <form action="handleTransaction" @submit.prevent="handleTransaction">
-      <div>
-        <label for="invoiceNo">Invoice Number:</label>
-        <input type="text" v-model="invoiceNo" required />
+    <form
+      class="flex flex-col gap-4"
+      action="handleTransaction"
+      @submit.prevent="handleTransaction">
+      <div class="flex flex-col gap-2">
+        <label for="invoiceNo" class="text-lg font-semibold text-slate-800"
+          >Invoice Number</label
+        >
+        <input
+          class="p-2 rounded-lg bg-slate-200 focus:outline-none"
+          type="text"
+          v-model="invoiceNo"
+          required />
       </div>
-      <div>
-        <label for="date">Date:</label><input type="date" v-model="date" />
+      <div class="flex flex-col gap-2">
+        <label for="customer" class="text-lg font-semibold text-slate-800"
+          >Date</label
+        >
+        <input
+          class="p-2 rounded-lg bg-slate-200 focus:outline-none"
+          type="date"
+          v-model="date"
+          required />
       </div>
-      <div>
-        <label for="customer">Customer:</label>
-        <input type="text" v-model="customer" required />
+      <div class="flex flex-col gap-2">
+        <label for="customer" class="text-lg font-semibold text-slate-800"
+          >Customer</label
+        >
+        <input
+          class="p-2 rounded-lg bg-slate-200 focus:outline-none"
+          type="text"
+          v-model="customer"
+          required />
       </div>
-      <div>
-        <label for="product">Product:</label>
-        <select v-model="selectedProducts" multiple>
+      <div class="flex flex-col gap-2">
+        <label for="product" class="text-lg font-semibold text-slate-800"
+          >Product:</label
+        >
+        <select
+          class="p-2 rounded-lg bg-slate-200 focus:outline-none"
+          v-model="selectedProducts"
+          multiple>
           <option
             v-for="product in dataProducts"
             :key="product._id"
@@ -28,7 +55,11 @@
           </option>
         </select>
       </div>
-      <button type="submit">Submit</button>
+      <button
+        type="submit"
+        class="p-2 rounded-lg bg-slate-800 w-full text-white">
+        Submit
+      </button>
     </form>
   </div>
 </template>
