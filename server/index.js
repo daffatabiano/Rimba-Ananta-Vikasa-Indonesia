@@ -11,6 +11,14 @@ dotenv.config();
 const port = process.env.PORT;
 const app = express();
 
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
 mongoose.connect(process.env.MONGO_URI);
 
 const db = mongoose.connection;
@@ -19,20 +27,15 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(userRoutes);
 app.use(productRoutes);
 app.use(transactionRoutes);
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 export default app;
