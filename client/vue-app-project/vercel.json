@@ -1,5 +1,3 @@
 {
-  "rewrites": [
-    { "source": "/client/vue-app-project/(.*)", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
