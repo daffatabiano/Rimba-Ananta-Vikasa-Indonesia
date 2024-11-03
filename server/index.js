@@ -11,19 +11,16 @@ dotenv.config();
 const port = process.env.PORT;
 const app = express();
 
-const corsOptions = {
-  origin: process.env.CLIENT_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
-
 app.use(
   cors({
-    origin: corsOptions.origin,
-    methods: corsOptions.methods,
-    allowedHeaders: corsOptions.allowedHeaders,
-    credentials: corsOptions.credentials,
+    origin: process.env.CLIENT_URL,
+    methods: ['POST', 'GET', 'DELETE'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Access-Control-Allow-Origin',
+    ],
+    credentials: true,
   })
 );
 
