@@ -67,7 +67,10 @@ export const getTransactionByUserId = async (req, res) => {
       });
     }
 
-    const transactions = await Transaction.find({ userId: user?._id });
+    const transactions = await Transaction.find({
+      userId: user?._id,
+      deleted: false,
+    });
     res.status(200).json({
       success: true,
       message: null,
@@ -94,6 +97,7 @@ export const archieveTransaction = async (req, res) => {
 
     transactionId.deleted = true;
     transactionId.deletedAt = Date.now();
+
     await transactionId.save();
 
     return res.status(200).json({

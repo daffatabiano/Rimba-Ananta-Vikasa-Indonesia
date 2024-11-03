@@ -8,6 +8,7 @@ import {
   restoreTransactionDeleter,
 } from '../controllers/transactionController.js';
 import { verifyAccess } from '../middlewares/verifyAccess.js';
+import { getArchieveTransaction } from '../controllers/archieveController.js';
 
 const routes = express.Router();
 
@@ -21,5 +22,6 @@ routes.put(
 );
 routes.delete('/api/v1/transaction/:id', verifyAccess, deleteTransaction);
 routes.get('/api/v1/transactions/summary', verifyAccess, getSummary);
+routes.get('/api/v1/archieved', verifyAccess, getArchieveTransaction);
 
 export default routes;

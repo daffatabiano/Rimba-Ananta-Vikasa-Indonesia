@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col bg-white p-4 drop-shadow rounded-lg">
     <h1 class="text-2xl font-bold">Transaction</h1>
-
+    <p
+      v-if="notify"
+      :class="message?.includes('Success') ? 'text-green-700' : 'text-red-700'">
+      {{ message }}
+    </p>
     <form
       class="flex flex-col gap-4"
       action="handleTransaction"
@@ -75,6 +79,9 @@ export default {
       customer: '',
       selectedProducts: [],
       dataProducts: [],
+
+      notify: false,
+      message: '',
     };
   },
   mounted() {
@@ -108,8 +115,17 @@ export default {
           }
         );
         const data = await response.json();
-        console.log(transaction);
+        console.log(response.status);
+        if (response.status === 201) {
+          this.message = 'Transaction Created Successfully';
+          this.notify = true;
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 500);
+        }
       } catch (error) {
+        this.message = error.message;
+        this.notify = true;
         console.error(error);
       }
     },

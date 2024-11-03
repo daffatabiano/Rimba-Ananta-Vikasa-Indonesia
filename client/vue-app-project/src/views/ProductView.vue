@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="max-h-screen overflow-hidden">
     <HeadersDashboard />
     <SidebarDashboard />
     <div class="ps-52 pt-28 pe-4">
@@ -23,6 +23,11 @@ export default {
     HeadersDashboard,
     SidebarDashboard,
     ProductTabel,
+  },
+  methods: {
+    refreshProducts() {
+      this.$refs.productTable.getProducts(); // Panggil metode getProducts di ProductTabel
+    },
   },
 };
 </script>

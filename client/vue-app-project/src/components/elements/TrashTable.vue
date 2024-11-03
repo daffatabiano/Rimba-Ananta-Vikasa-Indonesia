@@ -2,7 +2,7 @@
   <table class="w-full border border-slate-700 border-collapse">
     <thead class="bg-slate-700 text-white text-center">
       <tr class="border-collapse border-white">
-        <th class="border border-collapse">Customer Id</th>
+        <th class="border border-collapse">Customer</th>
         <th class="border border-collapse">Invoice No</th>
         <th class="border border-collapse">Date</th>
         <th class="border border-collapse">Action</th>
@@ -10,12 +10,15 @@
     </thead>
     <tbody class="bg-slate-700 text-white text-center">
       <tr
+        v-if="this.transactions.length > 0"
         class="border-collapse odd:slate-300 even:slate-200"
         v-for="transaction in transactions"
         :key="transaction._id">
-        <td class="border border-collapse">{{ transaction.customerId }}</td>
+        <td class="p-3 border border-collapse">{{ transaction.customer }}</td>
         <td class="border border-collapse">{{ transaction.invoiceNo }}</td>
-        <td class="border border-collapse">{{ transaction.date }}</td>
+        <td class="border border-collapse">
+          {{ transaction.date.slice(0, 10).split('-').reverse().join('/') }}
+        </td>
         <td class="border border-collapse">
           <button
             type="button"
@@ -23,6 +26,14 @@
             class="px-2 py-1 bg-blue-600 rounded-lg">
             Restore
           </button>
+        </td>
+      </tr>
+      <tr v-else>
+        <td colspan="4" class="text-center p-2">
+          No data Deleted
+          <a href="/transaction" class="text-red-600 font-bold italic"
+            >Deleted data</a
+          >
         </td>
       </tr>
     </tbody>
@@ -37,6 +48,7 @@ export default {
       transactions: [],
     };
   },
+
   async mounted() {
     await this.getTransactions();
   },
@@ -45,7 +57,7 @@ export default {
     async getTransactions() {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_API_URL}/transactions`,
+          `${import.meta.env.VITE_BASE_API_URL}/archieved`,
           {
             method: 'GET',
             headers: {

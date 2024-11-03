@@ -5,7 +5,7 @@
         <tr class="border-collapse border-white">
           <th class="border border-collapse">Customer</th>
           <th class="border border-collapse">Invoice No</th>
-          <th colspan="2" class="border border-collapse">Product Code</th>
+          <th class="border border-collapse">Product Code</th>
           <th class="border border-collapse">Date</th>
         </tr>
       </thead>
@@ -18,11 +18,12 @@
           :key="summary._id">
           <td class="p-2 border border-collapse">{{ summary.customer }}</td>
           <td class="p-2 border border-collapse">{{ summary.invoiceNo }}</td>
-          <td
-            class="p-2 border border-collapse"
-            v-for="product in summary.products"
-            :key="product._id">
-            {{ product.productCode }}
+          <td class="p-2 border border-collapse">
+            <span
+              v-for="(product, index) in summary.products"
+              :key="product._id">
+              {{ product.productCode }} <br />
+            </span>
           </td>
           <td class="p-2 border border-collapse">
             {{ summary.date.slice(0, 10).split('-').reverse().join('/') }}

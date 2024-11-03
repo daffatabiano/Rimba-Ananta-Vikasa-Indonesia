@@ -1,6 +1,11 @@
 <template>
   <div class="bg-slate-100 h-full min-h-96 p-4 rounded-lg flex flex-col">
     <h1 class="text-2xl font-bold mb-6">Product Create</h1>
+    <p
+      v-if="notify"
+      :class="message.includes('Success') ? 'text-green-700' : 'text-red-700'">
+      {{ message }}
+    </p>
     <form
       class="flex flex-col gap-4"
       action="handleProduct"
@@ -27,11 +32,14 @@
           required
           class="p-2 rounded-lg" />
       </div>
-      <button
-        class="p-2 rounded-lg text-center bg-slate-300 font-bold text-slate-800"
-        type="submit">
-        Submit
-      </button>
+      <div class="flex gap-1">
+        <button
+          class="p-2 rounded-lg w-[90%] text-center bg-slate-300 font-bold text-slate-800"
+          type="submit">
+          Submit
+        </button>
+        <button class="p-2 rounded-lg w-[10%]" type="button">🔃</button>
+      </div>
     </form>
   </div>
 </template>
@@ -43,7 +51,18 @@ export default {
       name: '',
       price: 0,
       quantity: 0,
+
+      notify: false,
+      message: '',
     };
+  },
+  props: {
+    $refs: {
+      productTable: Object,
+    },
+  },
+  async mounted() {
+    this.getProducts();
   },
 
   methods: {
@@ -67,13 +86,19 @@ export default {
 
         if (response.status === 201) {
           const data = await response.json();
-          console.log(data);
+          this.notify = true;
+          this.message = 'Product Created Successfully';
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 500);
         } else {
           const errorData = await response.json();
-          alert(errorData.message);
+          this.notify = true;
+          this.message = errorData.message;
         }
       } catch (error) {
-        console.error(error);
+        this.notify = true;
+        this.message = 'Something went wrong';
       }
     },
   },

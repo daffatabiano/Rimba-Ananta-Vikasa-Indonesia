@@ -30,11 +30,11 @@ export default {
     async handleDelete() {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_API_URL}/transactions/${
+          `${import.meta.env.VITE_BASE_API_URL}/transaction/${
             this.$route.params.id
           }`,
           {
-            method: 'DELETE',
+            method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
               Accept: 'application/json',
@@ -44,7 +44,7 @@ export default {
         );
 
         if (res.status === 200) {
-          this.$router.push('/dashboard');
+          this.$router.push('/trash');
         }
       } catch (err) {
         console.log(err);

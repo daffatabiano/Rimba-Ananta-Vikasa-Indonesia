@@ -1,28 +1,27 @@
 <template>
-  <table class="w-full border border-slate-700 border-collapse">
-    <thead class="bg-slate-700 text-white text-center">
+  <table class="w-full h-fit border border-slate-700 border-collapse">
+    <thead class="bg-slate-700 text-white">
       <tr class="border-collapse border-white">
         <th class="border border-collapse">Customer</th>
         <th class="border border-collapse">Invoice No</th>
-        <th colspan="2" class="border border-collapse">Product Code</th>
+        <th class="border border-collapse">Product Code</th>
         <th class="border border-collapse">Date</th>
         <th class="border border-collapse">action</th>
       </tr>
     </thead>
     <tbody
       v-if="this.transactions.length > 0"
-      class="overflow-auto border-collapse max-h-96 h-full">
+      class="overflow-auto border-collapse">
       <tr
-        class="even:bg-slate-200 odd:bg-slate-300 border border-collapse"
+        class="even:bg-slate-200 odd:bg-slate-300 border border-collapse w-full"
         v-for="transaction in transactions"
-        :key="summary._id">
+        :key="transaction._id">
         <td class="p-2 border border-collapse">{{ transaction.customer }}</td>
         <td class="p-2 border border-collapse">{{ transaction.invoiceNo }}</td>
-        <td
-          class="p-2 border border-collapse"
-          v-for="product in transaction.products"
-          :key="transaction._id">
-          {{ product.productCode }}
+        <td class="p-2 border border-collapse">
+          <span v-for="product in transaction.products" :key="product._id">
+            {{ product.productCode }} <br />
+          </span>
         </td>
         <td class="p-2 border border-collapse">
           {{ transaction.date.slice(0, 10).split('-').reverse().join('/') }}
@@ -75,8 +74,10 @@ export default {
             },
           }
         );
+
         const data = await res.json();
-        this.transactions = data;
+
+        this.transactions = data.data;
       } catch (err) {
         console.log(err);
       }
