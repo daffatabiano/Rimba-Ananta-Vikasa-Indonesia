@@ -18,7 +18,14 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: corsOptions.origin,
+    methods: corsOptions.methods,
+    allowedHeaders: corsOptions.allowedHeaders,
+    credentials: corsOptions.credentials,
+  })
+);
 
 mongoose.connect(process.env.MONGO_URI);
 
