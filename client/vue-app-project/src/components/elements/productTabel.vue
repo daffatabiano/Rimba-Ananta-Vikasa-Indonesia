@@ -51,7 +51,7 @@ export default {
     async getProducts() {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_API_URL}/products`,
+          `${import.meta.env.VITE_BASE_API_URL}/product`,
           {
             method: 'GET',
             headers: {

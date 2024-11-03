@@ -79,7 +79,7 @@ export const getTransactionByUserId = async (req, res) => {
   }
 };
 
-export const deleteTransaction = async (req, res) => {
+export const archieveTransaction = async (req, res) => {
   try {
     const transactionId = await Transaction.findById(req.params.id);
 
@@ -137,6 +137,31 @@ export const restoreTransactionDeleter = async (req, res) => {
       requestId: uuidv4(),
       data: null,
     });
+  }
+};
+
+export const deleteTransaction = async (req, res) => {
+  try {
+    const trscId = await Transaction.findById(req.params.id);
+
+    if (!trscId) {
+      return res.status(404).json({
+        success: false,
+        message: 'Transaction Not Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    } else {
+      await trscId.remove();
+      return res.status(200).json({
+        success: true,
+        message: 'Transaction Deleted',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 

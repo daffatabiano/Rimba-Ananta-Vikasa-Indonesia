@@ -67,3 +67,31 @@ export const getProductByUserId = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const getProductDetails = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({
+        requestId: uuidv4(),
+        success: false,
+        message: 'Product Not Found',
+        data: null,
+      });
+    }
+    res.status(200).json({
+      requestId: uuidv4(),
+      success: true,
+      message: null,
+      data: product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      requestId: uuidv4(),
+      data: null,
+    });
+  }
+};

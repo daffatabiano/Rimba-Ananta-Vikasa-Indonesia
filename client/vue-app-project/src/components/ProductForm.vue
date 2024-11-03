@@ -48,7 +48,6 @@ export default {
 
   methods: {
     async handleProduct() {
-      console.log(this.name, this.price, this.quantity);
       try {
         const response = await fetch(
           `${import.meta.env.VITE_BASE_API_URL}/products`,
@@ -56,7 +55,6 @@ export default {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Accept: 'application/json',
               Authorization: localStorage.getItem('token'),
             },
             body: JSON.stringify({

@@ -19,14 +19,7 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    methods: ['POST', 'GET', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin'],
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,7 +29,7 @@ app.use(productRoutes);
 app.use(transactionRoutes);
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
 
 export default app;

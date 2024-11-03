@@ -7,6 +7,7 @@ import DashboardView from './views/DashboardView.vue';
 import HomeView from './views/HomeView.vue';
 import DeleteView from './views/DeleteView.vue';
 import TrashView from './views/TrashView.vue';
+import ProductDetail from './views/ProductDetail.vue';
 
 const routes = [
   { path: '/', component: HomeView },
@@ -17,6 +18,7 @@ const routes = [
   { path: '/dashboard', component: DashboardView },
   { path: '/transaction/:id', component: DeleteView },
   { path: '/trash', component: TrashView },
+  { path: '/product/:id', component: ProductDetail },
 ];
 
 const router = createRouter({
