@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: TrashTable,
+  name: 'TrashTable',
   data() {
     return {
       transactions: [],

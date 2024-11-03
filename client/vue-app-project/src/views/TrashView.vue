@@ -1,38 +1,23 @@
 <template>
-  <div>
-    <table class="w-full border border-slate-700 border-collapse">
-      <thead class="bg-slate-700 text-white text-center">
-        <tr class="border-collapse border-white">
-          <th class="border border-collapse">Customer Id</th>
-          <th class="border border-collapse">Invoice No</th>
-          <th class="border border-collapse">Date</th>
-          <th class="border border-collapse">Action</th>
-        </tr>
-      </thead>
-      <tbody class="bg-slate-700 text-white text-center">
-        <tr
-          class="border-collapse odd:slate-300 even:slate-200"
-          v-for="transaction in transactions"
-          :key="transaction._id">
-          <td class="border border-collapse">{{ transaction.customerId }}</td>
-          <td class="border border-collapse">{{ transaction.invoiceNo }}</td>
-          <td class="border border-collapse">{{ transaction.date }}</td>
-          <td class="border border-collapse">
-            <button
-              type="button"
-              @click="handleRestored(transaction._id)"
-              class="px-2 py-1 bg-blue-600 rounded-lg">
-              Restore
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <HeadersDashboard />
+  <SidebarDashboard />
+  <div class="ps-52 pt-28 pe-4">
+    <TrashTable />
   </div>
 </template>
 
 <script>
+import TrashTable from '../components/elements/TrashTable.vue';
+import SidebarDashboard from '../components/elements/SidebarDashboard.vue';
+import HeadersDashboard from '../components/elements/HeadersDashboard.vue';
+
 export default {
+  name: 'TrashView',
+  components: {
+    TrashTable,
+    HeadersDashboard,
+    SidebarDashboard,
+  },
   data() {
     return {
       transactions: [],
