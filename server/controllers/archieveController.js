@@ -34,3 +34,35 @@ export const getArchieveTransaction = async (req, res) => {
     });
   }
 };
+
+export const getArchieveProduct = async (req, res) => {
+  try {
+    const products = await Product.find({
+      creator: req.user?._id,
+      deleted: true,
+    });
+
+    if (!products) {
+      return res.status(404).json({
+        success: false,
+        message: 'No Product Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      success: false,
+      message: null,
+      requestId: uuidv4(),
+      data: products,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      requestId: uuidv4(),
+      data: null,
+    });
+  }
+};

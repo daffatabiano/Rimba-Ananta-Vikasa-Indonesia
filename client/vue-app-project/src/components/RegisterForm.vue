@@ -72,6 +72,9 @@ export default {
       email: '',
       password: '',
       phoneNumber: '',
+
+      notify: false,
+      message: '',
     };
   },
   methods: {
@@ -95,15 +98,36 @@ export default {
         );
         if (response.status === 201) {
           await response.json();
+
+          this.notify = true;
+          this.message = 'Register Success !';
+
           setTimeout(() => {
             this.$router.push('/login');
+
+            this.notify = false;
+            this.message = '';
           }, 1000);
         } else {
           const errorData = await response.json();
-          alert(errorData.message);
+          console.log(errorData.message);
+
+          this.notify = true;
+          this.message = errorData.message;
+
+          setTimeout(() => {
+            this.notify = false;
+            this.message = '';
+          }, 3000);
         }
       } catch (error) {
-        console.log(error);
+        this.notify = true;
+        this.message = error.message;
+
+        setTimeout(() => {
+          this.notify = false;
+          this.message = '';
+        }, 3000);
       }
     },
   },

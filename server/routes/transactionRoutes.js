@@ -9,6 +9,7 @@ import {
 } from '../controllers/transactionController.js';
 import { verifyAccess } from '../middlewares/verifyAccess.js';
 import { getArchieveTransaction } from '../controllers/archieveController.js';
+import { getActivity } from '../controllers/activityController.js';
 
 const routes = express.Router();
 
@@ -20,8 +21,13 @@ routes.put(
   verifyAccess,
   restoreTransactionDeleter
 );
-routes.delete('/api/v1/transaction/:id', verifyAccess, deleteTransaction);
+routes.delete(
+  '/api/v1/delete-transaction/:id',
+  verifyAccess,
+  deleteTransaction
+);
 routes.get('/api/v1/transactions/summary', verifyAccess, getSummary);
 routes.get('/api/v1/archieved', verifyAccess, getArchieveTransaction);
+routes.get('/api/v1/activity', verifyAccess, getActivity);
 
 export default routes;

@@ -1,29 +1,49 @@
 <template>
-  <div class="flex justify-center items-center w-full h-full">
+  <div class="flex justify-center min-h-screen items-center w-full h-full">
     <div
-      class="w-1/2 h-full bg-white rounded-lg p-4 drop-shadow m-auto text-center">
-      <h1 class="font-bold text-2xl mb-2">{{ products.name }}</h1>
-      <p class="font-light text-lg text-slate-400 mb-4">
-        {{ products.productCode }}
-      </p>
-
-      <input
-        type="text"
-        disabled
-        class="w-full p-2 rounded-lg mb-2"
-        :value="products.price" />
-
-      <input
-        type="text"
-        disabled
-        class="w-full p-2 rounded-lg mb-2"
-        :value="products.quantity" />
-
-      <button
-        class="bg-slate-400 text-white px-4 py-2 w-full rounded-lg"
-        @click="this.$router.push('/product')">
-        Back
-      </button>
+      class="w-1/4 flex flex-col justify-between h-full min-h-96 bg-slate-300 rounded-lg p-4 drop-shadow-lg m-auto text-center">
+      <div>
+        <h1 class="font-bold text-2xl mb-2 uppercase italic">
+          {{ products.name }}
+        </h1>
+        <p class="font-light text-lg text-slate-400 mb-4">
+          {{ products.productCode }}
+        </p>
+        <label for="price">Price</label>
+        <input
+          type="text"
+          disabled
+          class="w-full p-2 rounded-lg mb-2 bg-white cursor-not-allowed"
+          :value="products.price" />
+        <label for="quantity">Quantity</label>
+        <input
+          type="text"
+          disabled
+          class="w-full p-2 rounded-lg mb-2 bg-white cursor-not-allowed"
+          :value="products.quantity" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <div class="flex gap-2">
+          <button
+            type="button"
+            class="bg-slate-400 px-4 py-2 w-full rounded-lg"
+            @click="this.$router.push('/product')">
+            Back
+          </button>
+          <button
+            type="button"
+            class="bg-rose-600 text-white px-4 py-2 w-full rounded-lg"
+            @click="moveToTrash">
+            Move To Trash
+          </button>
+        </div>
+        <button
+          type="button"
+          @click="handleDelete"
+          class="bg-red-700 text-white px-4 py-2 w-full rounded-lg">
+          Delete Permanent
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +58,8 @@ export default {
   data() {
     return {
       products: {},
+
+      id: this.$route.params.id,
     };
   },
   async mounted() {
@@ -61,6 +83,47 @@ export default {
       this.products = data.data;
 
       console.log(data);
+    },
+    async moveToTrash() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/product-archieved/${this.id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        const data = await res.json();
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async handleDelete() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/delete-product/${this.id}`,
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        const data = await res.json();
+        console.log(data);
+        if (data.status === 'success') {
+          this.$router.push('/product');
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

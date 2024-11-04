@@ -1,28 +1,22 @@
 <template>
-  <div class="max-h-screen overflow-hidden">
-    <HeadersDashboard />
-    <SidebarDashboard />
-    <div class="ps-52 pt-28 pe-4">
-      <div class="flex gap-4 w-full h-full">
-        <ProductForm />
-        <ProductTabel />
-      </div>
+  <DashboardLayout>
+    <div class="flex gap-4 w-full h-full">
+      <ProductForm />
+      <ProductTabel />
     </div>
-  </div>
+  </DashboardLayout>
 </template>
 
 <script>
-import HeadersDashboard from '../components/elements/HeadersDashboard.vue';
 import ProductTabel from '../components/elements/productTabel.vue';
-import SidebarDashboard from '../components/elements/SidebarDashboard.vue';
 import ProductForm from '../components/ProductForm.vue';
+import DashboardLayout from '../layouts/DashboardLayout.vue';
 
 export default {
   components: {
     ProductForm,
-    HeadersDashboard,
-    SidebarDashboard,
     ProductTabel,
+    DashboardLayout,
   },
   methods: {
     refreshProducts() {

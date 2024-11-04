@@ -1,60 +1,66 @@
 <template>
-  <div>
-    <table class="w-full border border-slate-700 border-collapse">
-      <thead class="bg-slate-700 text-white text-center">
-        <tr class="border-collapse border-white">
-          <th class="border border-collapse">Customer</th>
-          <th class="border border-collapse">Invoice No</th>
-          <th class="border border-collapse">Product Code</th>
-          <th class="border border-collapse">Date</th>
-        </tr>
-      </thead>
-      <tbody
-        v-if="this.summaries.length > 0"
-        class="overflow-auto border-collapse max-h-96 h-full">
-        <tr
-          class="even:bg-slate-200 odd:bg-slate-300 border border-collapse"
-          v-for="summary in summaries"
-          :key="summary._id">
-          <td class="p-2 border border-collapse">{{ summary.customer }}</td>
-          <td class="p-2 border border-collapse">{{ summary.invoiceNo }}</td>
-          <td class="p-2 border border-collapse">
-            <span
-              v-for="(product, index) in summary.products"
-              :key="product._id">
-              {{ product.productCode }} <br />
-            </span>
-          </td>
-          <td class="p-2 border border-collapse">
-            {{ summary.date.slice(0, 10).split('-').reverse().join('/') }}
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan="6" class="text-center p-2">
-            No data available
-            <a href="/transaction" class="text-slate-800 font-bold italic"
-              >Input data</a
-            >
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="flex flex-col gap-2">
+    <div>
+      <h1 class="font-bold text-2xl">Transactions History</h1>
+      <ReusableTable
+        :datas="this.summaries.transactions"
+        :headers="headersTransactions" />
+    </div>
+    <div>
+      <h1 class="font-bold text-2xl">Products History</h1>
+      <ReusableTable
+        :datas="this.summaries.products"
+        :headers="headersProducts" />
+    </div>
+    <div>
+      <h1 class="font-bold text-2xl">Activity History</h1>
+      <ReusableTable :datas="this.activity" :headers="headersActivity" />
+    </div>
   </div>
 </template>
 
 <script>
+import ReusableTable from './ReusableTable.vue';
 export default {
   data() {
     return {
       summaries: [],
+      activity: [],
+
+      headersTransactions: ['Customer', 'Invoice No', 'Product Code', 'Date'],
+      headersProducts: ['Product Code', 'Name', 'Price', 'Quantity'],
+      headersActivity: ['Title', 'Action', 'Timestamp', 'User'],
     };
   },
+  components: {
+    ReusableTable,
+  },
+
   mounted() {
     this.getSummary();
+    this.getActivity();
   },
   methods: {
+    async getActivity() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/activity`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        const data = await res.json();
+
+        this.activity = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async getSummary() {
       try {
         const res = await fetch(
@@ -70,7 +76,6 @@ export default {
         );
         const data = await res.json();
         this.summaries = data.data;
-        console.log(this.summaries, 'data');
       } catch (error) {
         console.log(error);
       }

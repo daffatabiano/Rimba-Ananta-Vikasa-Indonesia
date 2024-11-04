@@ -38,7 +38,7 @@
           type="submit">
           Submit
         </button>
-        <button class="p-2 rounded-lg w-[10%]" type="button">🔃</button>
+        <button class="p-2 rounded-lg w-[10%]" type="reset">🔃</button>
       </div>
     </form>
   </div>

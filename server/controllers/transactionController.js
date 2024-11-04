@@ -1,6 +1,7 @@
 import Transaction from '../models/transactionModel.js';
 import Product from '../models/productModel.js';
 import User from '../models/userModel.js';
+import Activity from '../models/activityModel.js';
 import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
 
@@ -8,6 +9,16 @@ export const createTransaction = async (req, res) => {
   try {
     const userId = req?.user?._id;
     const user = await User.findById(userId);
+
+    await Activity.create({
+      userId: userId,
+      action: 'Transaction Created',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
 
     if (!user) {
       return res.status(404).json({
@@ -86,6 +97,16 @@ export const archieveTransaction = async (req, res) => {
   try {
     const transactionId = await Transaction.findById(req.params.id);
 
+    await Activity.create({
+      userId: req?.user?._id,
+      action: 'Transaction Temporary Deleted',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
+
     if (!transactionId) {
       return res.status(404).json({
         success: false,
@@ -114,6 +135,16 @@ export const archieveTransaction = async (req, res) => {
 export const restoreTransactionDeleter = async (req, res) => {
   try {
     const trscId = await Transaction.findById(req.params.id);
+
+    await Activity.create({
+      userId: req?.user?._id,
+      action: 'Transaction Restored',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
 
     if (!trscId) {
       return res.status(404).json({
@@ -146,24 +177,44 @@ export const restoreTransactionDeleter = async (req, res) => {
 
 export const deleteTransaction = async (req, res) => {
   try {
-    const trscId = await Transaction.findById(req.params.id);
+    const transactionId = req.params.id;
 
-    if (!trscId) {
+    await Activity.create({
+      userId: req?.user?._id,
+      action: 'Transaction Permanently Deleted',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
+
+    if (!mongoose.Types.ObjectId.isValid(transactionId)) {
       return res.status(404).json({
         success: false,
         message: 'Transaction Not Found',
         requestId: uuidv4(),
         data: null,
       });
-    } else {
-      await trscId.remove();
-      return res.status(200).json({
-        success: true,
-        message: 'Transaction Deleted',
+    }
+
+    const transaction = await Transaction.findByIdAndDelete(transactionId);
+
+    if (!transaction) {
+      return res.status(404).json({
+        success: false,
+        message: 'Transaction Not Found',
         requestId: uuidv4(),
         data: null,
       });
     }
+
+    res.status(200).json({
+      success: true,
+      message: 'Transaction Successfully Deleted',
+      requestId: uuidv4(),
+      data: transaction,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -175,12 +226,18 @@ export const getSummary = async (req, res) => {
     console.log(userId);
 
     const transactions = await Transaction.find({ userId: userId });
+    const products = await Product.find({ creator: userId });
+
+    const summary = {
+      transactions,
+      products,
+    };
 
     res.status(200).json({
       success: true,
       message: null,
       requestId: uuidv4(),
-      data: transactions,
+      data: summary,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

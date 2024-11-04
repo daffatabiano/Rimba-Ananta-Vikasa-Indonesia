@@ -22,6 +22,11 @@ const productModel = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
+  deletedAt: Date,
 });
 
 export default mongoose.model('Product', productModel);
