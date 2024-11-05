@@ -20,3 +20,35 @@ export const getActivity = async (req, res) => {
     });
   }
 };
+
+export const clearActivity = async (req, res) => {
+  try {
+    const userId = req?.user?._id;
+    const activities = await Activity.find({ userId: userId });
+
+    if (!activities.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'No activities Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+
+    await Activity.deleteMany({ userId: userId });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Activities Successfully Deleted',
+      requestId: uuidv4(),
+      data: null,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      requestId: uuidv4(),
+      data: null,
+    });
+  }
+};

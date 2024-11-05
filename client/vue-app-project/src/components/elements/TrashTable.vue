@@ -1,7 +1,124 @@
 <template>
+  <Toaster :message="message" :notify="notify" />
+  <!-- Modal Transaction -->
+
+  <!-- Modal Delete All -->
+  <ModalContent
+    :visible="visibleModalDeleteTransactions"
+    @close="visibleModalDeleteTransactions = false">
+    <h1 class="text-red-600 text-xl">
+      Are you sure want delete all transactions?
+    </h1>
+    <div class="flex gap-2 justify-end mt-2">
+      <button
+        type="button"
+        @click="visibleModalDeleteTransactions = false"
+        class="py-1 px-2 bg-red-600 rounded-lg text-white">
+        No
+      </button>
+      <button
+        type="button"
+        @click="handleDeleteTransactionAll"
+        class="py-1 px-2 bg-emerald-600 rounded-lg text-white">
+        Yes
+      </button>
+    </div>
+  </ModalContent>
+
+  <!-- Modal Restore All -->
+  <ModalContent
+    :visible="visibleModalRestoreTransactions"
+    @close="visibleModalRestoreTransactions = false">
+    <h1 class="text-emerald-600 text-xl">
+      Are you sure want Restore all transactions?
+    </h1>
+    <div class="flex gap-2 justify-end mt-2">
+      <button
+        type="button"
+        @click="visibleModalRestoreTransactions = false"
+        class="py-1 px-2 bg-red-600 rounded-lg text-white">
+        No
+      </button>
+      <button
+        type="button"
+        @click="handleRestoreTransactionAll"
+        class="py-1 px-2 bg-emerald-600 rounded-lg text-white">
+        Yes
+      </button>
+    </div>
+  </ModalContent>
+
+  <!-- Modal Transaction End -->
+
+  <!-- Modal Product -->
+
+  <!-- Modal Delete All -->
+  <ModalContent
+    :visible="visibleModalDeleteProducts"
+    @close="visibleModalDeleteProducts = false">
+    <h1 class="text-red-600 text-xl">Are you sure want delete all Products?</h1>
+    <div class="flex gap-2 justify-end mt-2">
+      <button
+        type="button"
+        @click="visibleModalDeleteProducts = false"
+        class="py-1 px-2 bg-red-600 rounded-lg text-white">
+        No
+      </button>
+      <button
+        type="button"
+        @click="handleRestoreProductAll"
+        class="py-1 px-2 bg-emerald-600 rounded-lg text-white">
+        Yes
+      </button>
+    </div>
+  </ModalContent>
+
+  <!-- Modal Restore All -->
+  <ModalContent
+    :visible="visibleModalRestoreProducts"
+    @close="visibleModalRestoreProducts = false">
+    <h1 class="text-emerald-600 text-xl">
+      Are you sure want restore all products?
+    </h1>
+    <div class="flex gap-2 justify-end mt-2">
+      <button
+        type="button"
+        @click="visibleModalRestoreProducts = false"
+        class="py-1 px-2 bg-red-600 rounded-lg text-white">
+        No
+      </button>
+      <button
+        type="button"
+        @click="handleRestoreProductAll"
+        class="py-1 px-2 bg-emerald-600 rounded-lg text-white">
+        Yes
+      </button>
+    </div>
+  </ModalContent>
+
+  <!-- Modal Product End -->
+
   <!-- Transaction table trash -->
   <div>
-    <h1 class="font-bold text-2xl">Transactions Table</h1>
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-2xl">Transaction Trash</h1>
+      <div class="flex gap-2">
+        <div class="flex gap-2">
+          <button
+            type="button"
+            @click="visibleModalRestoreTransactions = true"
+            class="bg-transparent text-emerald-600 underline underline-offset-2">
+            Restore All
+          </button>
+          <button
+            type="button"
+            @click="visibleModalDeleteTransactions = true"
+            class="bg-transparent text-red-600 underline underline-offset-2">
+            Delete All
+          </button>
+        </div>
+      </div>
+    </div>
     <table class="w-full border border-slate-700 border-collapse">
       <thead class="bg-slate-700 text-white text-center">
         <tr class="border-collapse border-white">
@@ -53,7 +170,25 @@
 
   <!-- Product table trash  -->
   <div>
-    <h1 class="font-bold text-2xl">Product Table</h1>
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-2xl">Product Trash</h1>
+      <div class="flex gap-2">
+        <div class="flex gap-2">
+          <button
+            type="button"
+            @click="visibleModalRestoreProducts = true"
+            class="bg-transparent text-emerald-600 underline underline-offset-2">
+            Restore All
+          </button>
+          <button
+            type="button"
+            @click="visibleModalDeleteProducts = true"
+            class="bg-transparent text-red-600 underline underline-offset-2">
+            Delete All
+          </button>
+        </div>
+      </div>
+    </div>
 
     <table class="w-full border border-slate-700 border-collapse">
       <thead class="bg-slate-700 text-white text-center">
@@ -67,7 +202,7 @@
       </thead>
       <tbody class="bg-slate-700 text-white text-center">
         <tr
-          v-if="this.transactions.length > 0"
+          v-if="this.products.length > 0"
           class="border-collapse odd:slate-300 even:slate-200"
           v-for="product in products"
           :key="product._id">
@@ -100,7 +235,7 @@
           </td>
         </tr>
         <tr v-else>
-          <td colspan="4" class="text-center p-2">
+          <td colspan="5" class="text-center p-2">
             No data Deleted
             <a href="/product" class="text-red-600 font-bold italic"
               >Deleted data</a
@@ -114,12 +249,27 @@
 </template>
 
 <script>
+import ModalContent from './Modals/ModalContent.vue';
+import Toaster from './Toaster.vue';
 export default {
   name: 'TrashTable',
+  components: {
+    ModalContent,
+    Toaster,
+  },
   data() {
     return {
       transactions: [],
       products: [],
+
+      notify: false,
+      message: '',
+
+      visibleModalDeleteTransactions: false,
+      visibleModalRestoreTransactions: false,
+
+      visibleModalDeleteProducts: false,
+      visibleModalRestoreProducts: false,
     };
   },
 
@@ -133,7 +283,7 @@ export default {
     async getTransactions() {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_API_URL}/archieved`,
+          `${import.meta.env.VITE_BASE_API_URL}/get-archieved-transaction`,
           {
             method: 'GET',
             headers: {
@@ -162,17 +312,80 @@ export default {
             },
           }
         );
+        const data = await res.json();
+
+        await this.getTransactions();
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 1000);
         if (res.status === 200) {
-          await this.getTransactions();
-          this.notify = true;
-          this.message = 'Transaction Restored';
-        } else {
-          this.notify = true;
-          this.message = 'Cannot Restore Transaction';
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 2000);
         }
       } catch (error) {
         this.notify = true;
         this.message = error.message;
+      }
+    },
+    async handleDeleteTransactionAll() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/transactions/clear-archieve`,
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        const data = await res.json();
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 1000);
+        if (res.status === 200) {
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 2000);
+        }
+      } catch (error) {
+        this.notify = true;
+        this.message = error.message;
+      }
+    },
+    async handleRestoreTransactionAll() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/transactions/restore-all`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        const data = await res.json();
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 1000);
+        if (res.status === 200) {
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 2000);
+        }
+      } catch (err) {
+        this.notify = true;
+        this.message = err.message;
       }
     },
 
@@ -180,7 +393,7 @@ export default {
     async getProducts() {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_API_URL}/products/get-archieved`,
+          `${import.meta.env.VITE_BASE_API_URL}/products/get-archieved-product`,
           {
             method: 'GET',
             headers: {
@@ -209,17 +422,80 @@ export default {
             },
           }
         );
+        const data = await res.json();
+        await this.getProducts();
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 1000);
         if (res.status === 200) {
-          await this.getProducts();
-          this.notify = true;
-          this.message = 'Product Restored';
-        } else {
-          this.notify = true;
-          this.message = 'Cannot Restore Product';
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 2000);
         }
       } catch (error) {
         this.notify = true;
         this.message = error.message;
+      }
+    },
+
+    async handleDeleteProductAll() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/products/clear-archieve`,
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        const data = await res.json();
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 1000);
+        if (res.status === 200) {
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 2000);
+        }
+      } catch (error) {
+        this.notify = true;
+        this.message = error.message;
+      }
+    },
+    async handleRestoreProductAll() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_API_URL}/products/restore-all`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        const data = await res.json();
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 1000);
+        if (res.status === 200) {
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 2000);
+        }
+      } catch (err) {
+        this.notify = true;
+        this.message = err.message;
       }
     },
   },

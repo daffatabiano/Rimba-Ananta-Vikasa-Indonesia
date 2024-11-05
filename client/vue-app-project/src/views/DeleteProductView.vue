@@ -1,4 +1,5 @@
 <template>
+  <Toaster :message="message" :notify="notify" />
   <div class="flex justify-center items-center h-screen">
     <ModalDelete :handleDelete="submitDelete" />
   </div>
@@ -6,14 +7,19 @@
 
 <script>
 import ModalDelete from '../components/elements/ModalDelete.vue';
+import Toaster from '../components/elements/Toaster.vue';
 export default {
   name: 'DeleteProductView',
   components: {
     ModalDelete,
+    Toaster,
   },
   data() {
     return {
       id: this.$route.params.id,
+
+      notify: false,
+      message: '',
     };
   },
   methods: {
@@ -30,9 +36,19 @@ export default {
             },
           }
         );
-        console.log(res);
+
+        this.notify = true;
+        this.message = 'Product Deleted';
+        setTimeout(() => {
+          this.notify = false;
+          this.$router.push('/product');
+        }, 2000);
       } catch (err) {
-        console.log(err);
+        this.notify = true;
+        this.message = err.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 2000);
       }
     },
   },

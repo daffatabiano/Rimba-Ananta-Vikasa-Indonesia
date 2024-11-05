@@ -42,7 +42,8 @@
         <td class="p-2 border border-collapse">
           {{
             data?.date?.slice(0, 10).split('-').reverse().join('/') ||
-            data.quantity
+            data.quantity ||
+            details
           }}
         </td>
       </tr>
@@ -63,6 +64,11 @@
 <script>
 export default {
   name: 'ReusableTable',
+  props: {
+    details: {
+      type: Array,
+    },
+  },
   data() {
     return {
       formatDate: (date) => {

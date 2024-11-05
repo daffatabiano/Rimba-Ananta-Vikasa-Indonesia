@@ -1,11 +1,7 @@
 <template>
+  <Toaster :message="message" :notify="notify" />
   <div class="flex flex-col bg-white p-4 drop-shadow rounded-lg">
     <h1 class="text-2xl font-bold">Transaction</h1>
-    <p
-      v-if="notify"
-      :class="message?.includes('Success') ? 'text-green-700' : 'text-red-700'">
-      {{ message }}
-    </p>
     <form
       class="flex flex-col gap-4"
       action="handleTransaction"
@@ -69,6 +65,7 @@
 </template>
 
 <script>
+import Toaster from '../components/elements/Toaster.vue';
 export default {
   name: 'TransactionForm',
   data() {
@@ -83,6 +80,9 @@ export default {
       notify: false,
       message: '',
     };
+  },
+  components: {
+    Toaster,
   },
   mounted() {
     this.getProducts();
@@ -124,9 +124,11 @@ export default {
           }, 500);
         }
       } catch (error) {
-        this.message = error.message;
+        this.message = 'All fields are required';
         this.notify = true;
-        console.error(error);
+        setTimeout(() => {
+          this.notify = false;
+        }, 2000);
       }
     },
 
@@ -172,36 +174,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.transaction-form {
-  max-width: 300px;
-  margin: auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-.transaction-form h1 {
-  text-align: center;
-}
-.transaction-form div {
-  margin-bottom: 1rem;
-}
-.transaction-form label {
-  display: block;
-}
-.transaction-form input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
-.transaction-form button {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-</style>

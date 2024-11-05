@@ -1,10 +1,12 @@
 import express from 'express';
 import {
   archieveTransaction,
+  clearArchieveTransactions,
   createTransaction,
   deleteTransaction,
   getSummary,
   getTransactionByUserId,
+  restoreAllTransactions,
   restoreTransactionDeleter,
 } from '../controllers/transactionController.js';
 import { verifyAccess } from '../middlewares/verifyAccess.js';
@@ -27,7 +29,20 @@ routes.delete(
   deleteTransaction
 );
 routes.get('/api/v1/transactions/summary', verifyAccess, getSummary);
-routes.get('/api/v1/archieved', verifyAccess, getArchieveTransaction);
-routes.get('/api/v1/activity', verifyAccess, getActivity);
+routes.get(
+  '/api/v1/get-archieved-transaction',
+  verifyAccess,
+  getArchieveTransaction
+);
+routes.delete(
+  '/api/v1/transactions/clear-archieve',
+  verifyAccess,
+  clearArchieveTransactions
+);
+routes.put(
+  '/api/v1/transactions/restore-all',
+  verifyAccess,
+  restoreAllTransactions
+);
 
 export default routes;

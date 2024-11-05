@@ -2,7 +2,7 @@
   <DashboardLayout>
     <div class="flex gap-4 w-full h-full">
       <ProductForm />
-      <ProductTabel />
+      <ProductTabel ref="productTable" @refreshProducts="refreshProducts" />
     </div>
   </DashboardLayout>
 </template>
@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     refreshProducts() {
-      this.$refs.productTable.getProducts(); // Panggil metode getProducts di ProductTabel
+      this.$refs.productTable.getProducts();
     },
   },
 };

@@ -1,4 +1,5 @@
 <template>
+  <Toaster :message="message" :notify="notify" />
   <div class="flex justify-center min-h-screen items-center w-full h-full">
     <div
       class="w-1/4 flex flex-col justify-between h-full min-h-96 bg-slate-300 rounded-lg p-4 drop-shadow-lg m-auto text-center">
@@ -50,16 +51,21 @@
 
 <script>
 import CardDetails from '../components/elements/CardDetails.vue';
+import Toaster from '../components/elements/Toaster.vue';
 export default {
   name: 'ProductDetail',
   components: {
     CardDetails,
+    Toaster,
   },
   data() {
     return {
       products: {},
 
       id: this.$route.params.id,
+
+      notify: false,
+      message: '',
     };
   },
   async mounted() {
@@ -98,9 +104,19 @@ export default {
           }
         );
         const data = await res.json();
-        console.log(data);
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+          this.$router.push('/product');
+        }, 3000);
       } catch (error) {
-        console.log(error);
+        this.notify = true;
+        this.message = error.message;
+        setTimeout(() => {
+          this.notify = false;
+          this.$router.push('/product');
+        }, 3000);
       }
     },
     async handleDelete() {
@@ -117,12 +133,18 @@ export default {
           }
         );
         const data = await res.json();
-        console.log(data);
-        if (data.status === 'success') {
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
           this.$router.push('/product');
-        }
+        }, 2000);
       } catch (err) {
-        console.log(err);
+        this.notify = true;
+        this.message = err.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 2000);
       }
     },
   },

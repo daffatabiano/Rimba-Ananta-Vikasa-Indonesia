@@ -66,7 +66,6 @@ export default {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Origin: '*',
             },
             body: JSON.stringify({
               email: this.email,
@@ -86,13 +85,17 @@ export default {
             localStorage.setItem('user', JSON.stringify(data?.data?.user));
             this.notify = false;
             this.message = '';
-            this.$router.push('/');
+            this.$router.push('/dashboard');
           }, 1000);
         } else {
           const errorData = await response.json();
           this.loading = false;
           this.notify = true;
-          this.message = errorData.message;
+          this.message = errorData?.message;
+          setTimeout(() => {
+            this.notify = false;
+            this.message = '';
+          }, 1000);
         }
         this.$emit('login', {
           email: this.email,
@@ -101,7 +104,12 @@ export default {
         });
       } catch (error) {
         this.loading = false;
-        this.message = error.response.message;
+        this.message = error?.response?.message;
+        this.notify = true;
+        setTimeout(() => {
+          this.notify = false;
+          this.message = '';
+        }, 1000);
       }
     },
   },

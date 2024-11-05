@@ -2,7 +2,7 @@
   <div class="w-full overflow-hidden">
     <h2 class="text-2xl font-bold italic">Product List</h2>
     <div class="overflow-y-auto max-h-[80vh] pb-16">
-      <table class="w-full border border-slate-700 border-collapse">
+      <table class="w-full border border-collapse">
         <thead class="bg-slate-700 text-white sticky top-0">
           <tr class="border-collapse border-white">
             <th class="border border-collapse">Name</th>
@@ -18,7 +18,14 @@
             v-for="product in products"
             :key="product._id">
             <td class="border border-collapse p-2">{{ product.name }}</td>
-            <td class="border border-collapse">{{ product.price }}</td>
+            <td class="border border-collapse">
+              {{
+                Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(product.price)
+              }}
+            </td>
             <td class="border border-collapse">{{ product.quantity }}</td>
             <td class="border border-collapse flex justify-center p-2">
               <button
@@ -31,7 +38,6 @@
           </tr>
           <tr v-else class="text-center">
             <td colspan="4">No product found</td>
-            <!-- Pastikan colspan sesuai dengan jumlah kolom -->
           </tr>
         </tbody>
       </table>
@@ -71,7 +77,7 @@ export default {
 
         const data = await res.json();
 
-        this.products = data.data; // Pastikan ini sesuai dengan format response API
+        this.products = data.data;
       } catch (err) {
         console.log(err);
       }

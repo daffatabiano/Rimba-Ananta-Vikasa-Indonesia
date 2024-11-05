@@ -1,12 +1,20 @@
 <template>
+  <Toaster :message="message" :notify="notify" />
   <ModalDelete :handleDelete="submitDelete" />
 </template>
 
 <script>
+import Toaster from '../components/elements/Toaster.vue';
 import ModalDelete from '../components/elements/ModalDelete.vue';
 export default {
   name: 'PermanentDelete',
-  components: { ModalDelete },
+  data() {
+    return {
+      message: '',
+      notify: false,
+    };
+  },
+  components: { ModalDelete, Toaster },
   methods: {
     async submitDelete() {
       const id = this.$route.params.id;
@@ -23,11 +31,19 @@ export default {
           }
         );
         const data = await res.json();
-        if (res.status === 200) {
-          this.$router.push('/trash');
-        }
+
+        this.notify = true;
+        this.message = data.message;
+        setTimeout(() => {
+          this.notify = false;
+          this.$router.push('/transaction');
+        }, 2000);
       } catch (err) {
-        console.log(err);
+        this.notify = true;
+        this.message = err.message;
+        setTimeout(() => {
+          this.notify = false;
+        }, 2000);
       }
     },
   },

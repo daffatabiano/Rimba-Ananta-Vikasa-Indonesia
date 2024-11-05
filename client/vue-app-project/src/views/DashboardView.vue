@@ -5,14 +5,12 @@
       Summary Report
     </h1>
     <div class="mt-4">
-      <SummaryTable @show="showModal" />
+      <SummaryTable />
     </div>
   </DashboardLayout>
 </template>
 
 <script>
-import HeadersDashboard from '../components/elements/HeadersDashboard.vue';
-import SidebarDashboard from '../components/elements/SidebarDashboard.vue';
 import SummaryTable from '../components/elements/SummaryTable.vue';
 import DashboardLayout from '../layouts/DashboardLayout.vue';
 
@@ -22,15 +20,8 @@ export default {
   },
   name: 'DashboardView',
   components: {
-    HeadersDashboard,
-    SidebarDashboard,
     SummaryTable,
     DashboardLayout,
-  },
-  methods: {
-    showModal() {
-      this.showModal = true;
-    },
   },
 };
 </script>

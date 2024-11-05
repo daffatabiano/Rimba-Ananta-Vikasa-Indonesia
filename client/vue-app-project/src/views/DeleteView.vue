@@ -1,15 +1,20 @@
 <template>
+  <Toaster :message="message" :notify="notify" />
   <ModalDelete :handleDelete="handleDelete" />
 </template>
 
 <script>
+import Toaster from '../components/elements/Toaster.vue';
 import ModalDelete from '../components/elements/ModalDelete.vue';
 
 export default {
   name: 'DeleteView',
-  components: { ModalDelete },
+  components: { ModalDelete, Toaster },
   data() {
-    return {};
+    return {
+      notify: false,
+      message: '',
+    };
   },
   methods: {
     async handleDelete() {
@@ -27,10 +32,13 @@ export default {
             },
           }
         );
-
-        if (res.status === 200) {
-          this.$router.push('/trash');
-        }
+        const data = await res.json();
+        this.notify = true;
+        this.message = data.message;
+        setTimeeout(() => {
+          this.notify = false;
+          this.$router.push('/transaction');
+        }, 2000);
       } catch (err) {
         console.log(err);
       }

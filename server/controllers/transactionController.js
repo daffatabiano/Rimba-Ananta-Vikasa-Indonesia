@@ -243,3 +243,96 @@ export const getSummary = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const clearArchieveTransactions = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const transactions = await Transaction.find({
+      userId: userId,
+      deleted: true,
+    });
+
+    if (!transactions.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'No transactions Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+
+    await Activity.create({
+      userId: userId,
+      action: 'transactions Permanently All-Deleted',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
+
+    await Transaction.deleteMany({ userId: userId, deleted: true });
+
+    res.status(200).json({
+      requestId: uuidv4(),
+      success: true,
+      message: 'transactions Permanently Deleted Successfully',
+      data: null,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      requestId: uuidv4(),
+      data: null,
+    });
+  }
+};
+
+export const restoreAllTransactions = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const transactions = await Transaction.find({
+      userId: userId,
+      deleted: true,
+    });
+
+    if (!transactions.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'No transactions Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+
+    await Activity.create({
+      userId: userId,
+      action: 'transactions Permanently Restore-All',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
+
+    await Transaction.updateMany(
+      { userId: userId, deleted: true },
+      { deleted: false, deletedAt: null }
+    );
+
+    res.status(200).json({
+      requestId: uuidv4(),
+      success: true,
+      message: 'transactions Permanently Restore Successfully',
+      data: null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+      requestId: uuidv4(),
+      data: null,
+    });
+  }
+};

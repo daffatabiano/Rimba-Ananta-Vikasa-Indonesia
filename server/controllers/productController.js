@@ -58,7 +58,7 @@ export const createProduct = async (req, res) => {
 export const getProductByUserId = async (req, res) => {
   try {
     const userId = req.user._id;
-    const products = await Product.find({ creator: userId });
+    const products = await Product.find({ creator: userId, deleted: false });
     if (!products.length) {
       return res.status(404).json({
         requestId: uuidv4(),
@@ -227,5 +227,92 @@ export const restoreProduct = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
+  }
+};
+
+export const clearArchieveProduct = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const product = await Product.find({ creator: userId, deleted: true });
+
+    if (!product.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'No Product Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+
+    await Activity.create({
+      userId: userId,
+      action: 'Product Permanently All-Deleted',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
+
+    await Product.deleteMany({ creator: userId, deleted: true });
+
+    res.status(200).json({
+      requestId: uuidv4(),
+      success: true,
+      message: 'Product Permanently Deleted Successfully',
+      data: null,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      requestId: uuidv4(),
+      data: null,
+    });
+  }
+};
+
+export const restoreAllProducts = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const product = await Product.find({ creator: userId, deleted: true });
+
+    if (!product.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'No Product Found',
+        requestId: uuidv4(),
+        data: null,
+      });
+    }
+
+    await Activity.create({
+      userId: userId,
+      action: 'Product Permanently Restore-All',
+      details: {
+        path: req.originalUrl,
+        body: req.body,
+        query: req.query,
+      },
+    });
+
+    await Product.updateMany(
+      { creator: userId, deleted: true },
+      { deleted: false, deletedAt: null }
+    );
+
+    res.status(200).json({
+      requestId: uuidv4(),
+      success: true,
+      message: 'Product Permanently Restore Successfully',
+      data: null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+      requestId: uuidv4(),
+      data: null,
+    });
   }
 };

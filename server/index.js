@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
+import activityRoutes from './routes/activityRoutes.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(userRoutes);
 app.use(productRoutes);
 app.use(transactionRoutes);
+app.use(activityRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

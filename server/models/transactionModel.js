@@ -10,8 +10,14 @@ const transactionModel = mongoose.Schema({
   },
   products: [
     {
-      productCode: String,
-      quantity: Number,
+      productCode: {
+        type: String,
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
     },
   ],
   date: {

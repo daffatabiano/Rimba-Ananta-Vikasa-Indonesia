@@ -1,11 +1,7 @@
 <template>
+  <Toaster :message="message" :notify="notify" />
   <div class="bg-slate-100 h-full min-h-96 p-4 rounded-lg flex flex-col">
     <h1 class="text-2xl font-bold mb-6">Product Create</h1>
-    <p
-      v-if="notify"
-      :class="message.includes('Success') ? 'text-green-700' : 'text-red-700'">
-      {{ message }}
-    </p>
     <form
       class="flex flex-col gap-4"
       action="handleProduct"
@@ -45,6 +41,7 @@
 </template>
 
 <script>
+import Toaster from '../components/elements/Toaster.vue';
 export default {
   data() {
     return {
@@ -55,6 +52,9 @@ export default {
       notify: false,
       message: '',
     };
+  },
+  components: {
+    Toaster,
   },
   props: {
     $refs: {

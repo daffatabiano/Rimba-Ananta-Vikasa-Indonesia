@@ -12,7 +12,7 @@ import PermanentDelete from './views/PermanentDelete.vue';
 import DeleteProductView from './views/DeleteProductView.vue';
 
 const routes = [
-  { path: '/', component: HomeView },
+  { path: '/', component: LoginView },
   { path: '/login', component: LoginView },
   { path: '/register', component: RegisterView },
   { path: '/product', component: ProductView, meta: { requiresAuth: true } },
