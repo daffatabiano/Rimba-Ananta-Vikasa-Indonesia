@@ -11,6 +11,8 @@
           >Invoice Number</label
         >
         <input
+          :loading="loading"
+          :disabled="loading"
           class="p-2 rounded-lg bg-slate-200 focus:outline-none"
           type="text"
           v-model="invoiceNo"
@@ -21,6 +23,8 @@
           >Date</label
         >
         <input
+          :loading="loading"
+          :disabled="loading"
           class="p-2 rounded-lg bg-slate-200 focus:outline-none"
           type="date"
           v-model="date"
@@ -31,6 +35,8 @@
           >Customer</label
         >
         <input
+          :loading="loading"
+          :disabled="loading"
           class="p-2 rounded-lg bg-slate-200 focus:outline-none"
           type="text"
           v-model="customer"
@@ -41,6 +47,8 @@
           >Product:</label
         >
         <select
+          :loading="loading"
+          :disabled="loading"
           class="p-2 rounded-lg bg-slate-200 focus:outline-none"
           v-model="selectedProducts"
           multiple>
@@ -56,6 +64,8 @@
         </select>
       </div>
       <button
+        :loading="loading"
+        :disabled="loading"
         type="submit"
         class="p-2 rounded-lg bg-slate-800 w-full text-white">
         Submit
@@ -79,6 +89,7 @@ export default {
 
       notify: false,
       message: '',
+      loading: false,
     };
   },
   components: {
@@ -102,6 +113,7 @@ export default {
         products: this.selectedProducts,
       };
       try {
+        this.loading = true;
         const response = await fetch(
           `${import.meta.env.VITE_BASE_API_URL}/transactions`,
           {
@@ -117,6 +129,7 @@ export default {
         const data = await response.json();
         console.log(response.status);
         if (response.status === 201) {
+          this.loading = false;
           this.message = 'Transaction Created Successfully';
           this.notify = true;
           setTimeout(() => {
@@ -124,6 +137,7 @@ export default {
           }, 500);
         }
       } catch (error) {
+        this.loading = false;
         this.message = 'All fields are required';
         this.notify = true;
         setTimeout(() => {

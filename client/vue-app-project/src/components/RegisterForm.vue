@@ -19,6 +19,8 @@
         <label for="name">Name:</label>
         <input
           type="text"
+          :loading="loading"
+          :disabled="loading"
           v-model="name"
           required
           class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
@@ -26,6 +28,8 @@
       <div>
         <label for="email">Email:</label>
         <input
+          :loading="loading"
+          :disabled="loading"
           type="email"
           v-model="email"
           required
@@ -34,6 +38,8 @@
       <div>
         <label for="password">Password:</label>
         <input
+          :loading="loading"
+          :disabled="loading"
           type="password"
           v-model="password"
           required
@@ -42,12 +48,16 @@
       <div>
         <label for="phoneNumber">Number Phone</label>
         <input
+          :loading="loading"
+          :disabled="loading"
           type="number"
           v-model="phoneNumber"
           class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
 
       <button
+        :loading="loading"
+        :disabled="loading"
         type="submit"
         class="bg-slate-200 mt-6 px-4 py-2 rounded-lg w-full">
         Sign Up
@@ -75,11 +85,14 @@ export default {
 
       notify: false,
       message: '',
+
+      loading: false,
     };
   },
   methods: {
     async handleRegister() {
       try {
+        this.loading = true;
         const response = await fetch(
           `${import.meta.env.VITE_BASE_API_URL}/register`,
           {
@@ -99,6 +112,7 @@ export default {
         if (response.status === 201) {
           await response.json();
 
+          this.loading = false;
           this.notify = true;
           this.message = 'Register Success !';
 
@@ -109,6 +123,7 @@ export default {
             this.message = '';
           }, 1000);
         } else {
+          this.loading = false;
           const errorData = await response.json();
           console.log(errorData.message);
 
@@ -121,6 +136,7 @@ export default {
           }, 3000);
         }
       } catch (error) {
+        this.loading = false;
         this.notify = true;
         this.message = error.message;
 

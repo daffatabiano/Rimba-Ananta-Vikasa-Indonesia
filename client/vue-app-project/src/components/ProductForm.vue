@@ -10,19 +10,41 @@
         <label for="name" class="text-lg font-semibold text-slate-600"
           >Name</label
         >
-        <input class="p-2 rounded-lg" type="text" v-model="name" required />
+        <input
+          :loading="loading"
+          :disabled="loading"
+          class="p-2 rounded-lg"
+          type="text"
+          v-model="name"
+          required />
       </div>
       <div class="flex flex-col gap-2">
-        <label for="price" class="text-lg font-semibold text-slate-600"
+        <label
+          :loading="loading"
+          :disabled="loading"
+          for="price"
+          class="text-lg font-semibold text-slate-600"
           >Price</label
         >
-        <input type="number" v-model="price" required class="p-2 rounded-lg" />
+        <input
+          :loading="loading"
+          :disabled="loading"
+          type="number"
+          v-model="price"
+          required
+          class="p-2 rounded-lg" />
       </div>
       <div class="flex flex-col gap-2">
-        <label for="quantity" class="text-lg font-semibold text-slate-600"
+        <label
+          :loading="loading"
+          :disabled="loading"
+          for="quantity"
+          class="text-lg font-semibold text-slate-600"
           >Quantity</label
         >
         <input
+          :loading="loading"
+          :disabled="loading"
           type="number"
           v-model="quantity"
           required
@@ -30,6 +52,8 @@
       </div>
       <div class="flex gap-1">
         <button
+          :loading="loading"
+          :disabled="loading"
           class="p-2 rounded-lg w-[90%] text-center bg-slate-300 font-bold text-slate-800"
           type="submit">
           Submit
@@ -51,6 +75,7 @@ export default {
 
       notify: false,
       message: '',
+      loading: false,
     };
   },
   components: {
@@ -68,6 +93,7 @@ export default {
   methods: {
     async handleProduct() {
       try {
+        this.loading = true;
         const response = await fetch(
           `${import.meta.env.VITE_BASE_API_URL}/products`,
           {
@@ -85,6 +111,7 @@ export default {
         );
 
         if (response.status === 201) {
+          this.loading = false;
           const data = await response.json();
           this.notify = true;
           this.message = 'Product Created Successfully';
@@ -92,11 +119,13 @@ export default {
             window.location.reload(true);
           }, 500);
         } else {
+          this.loading = false;
           const errorData = await response.json();
           this.notify = true;
           this.message = errorData.message;
         }
       } catch (error) {
+        this.loading = false;
         this.notify = true;
         this.message = 'Something went wrong';
       }

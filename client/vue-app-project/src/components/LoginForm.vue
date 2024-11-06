@@ -21,6 +21,8 @@
           type="email"
           v-model="email"
           required
+          :loading="loading"
+          :disabled="loading"
           class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
       <div>
@@ -28,11 +30,15 @@
         <input
           type="password"
           v-model="password"
+          :loading="loading"
+          :disabled="loading"
           required
           class="w-full p-2 focus:outline-none bg-slate-100 rounded-lg" />
       </div>
       <button
         type="submit"
+        :loading="loading"
+        :disabled="loading"
         class="bg-slate-200 mt-6 px-4 py-2 rounded-lg w-full">
         Login
       </button>

@@ -50,12 +50,10 @@
 </template>
 
 <script>
-import CardDetails from '../components/elements/CardDetails.vue';
 import Toaster from '../components/elements/Toaster.vue';
 export default {
   name: 'ProductDetail',
   components: {
-    CardDetails,
     Toaster,
   },
   data() {
