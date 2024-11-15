@@ -70,12 +70,19 @@ export const login = async (req, res) => {
       }
     );
 
+    const userData = {
+      id: user?._id,
+      email: user?.email,
+      name: user?.name,
+      phoneNumber: user?.phoneNumber,
+    };
+
     res.status(200).json({
       requestId: uuidv4(),
       success: true,
       message: null,
       data: {
-        user: user,
+        user: userData,
         accessToken: accessToken,
         refreshToken: refreshToken,
         expires: Date.now() + 3600000,

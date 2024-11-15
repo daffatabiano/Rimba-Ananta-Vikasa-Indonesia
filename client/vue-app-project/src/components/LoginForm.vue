@@ -40,7 +40,7 @@
         :loading="loading"
         :disabled="loading"
         class="bg-slate-200 mt-6 px-4 py-2 rounded-lg w-full">
-        Login
+        {{ loading ? 'Loading...' : 'Login' }}
       </button>
       <p class="text-center mt-2 text-slate-500 text-sm">
         Don't have an account?

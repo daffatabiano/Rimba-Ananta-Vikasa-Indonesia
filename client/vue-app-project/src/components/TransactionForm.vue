@@ -130,11 +130,9 @@ export default {
         console.log(response.status);
         if (response.status === 201) {
           this.loading = false;
-          this.message = 'Transaction Created Successfully';
           this.notify = true;
-          setTimeout(() => {
-            window.location.reload(true);
-          }, 500);
+          this.message = 'Transaction Created Successfully';
+          this.refetchTransactions();
         }
       } catch (error) {
         this.loading = false;
@@ -183,6 +181,13 @@ export default {
         console.log(data);
       } catch (error) {
         console.error(error);
+      }
+    },
+    async refetchTransactions() {
+      if (this.notify === true) {
+        await this.getTransactions();
+        this.notify = false;
+        this.message = '';
       }
     },
   },
